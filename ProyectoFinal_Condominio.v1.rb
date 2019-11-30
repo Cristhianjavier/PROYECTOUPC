@@ -1,19 +1,19 @@
 require "test/unit"
 
 class Persona
-	attr_accessor :dni, :tipoPersona, :nombre, :apellido, :telefono, :arregloPersonasPermitidas
+	attr_accessor :dni, :tipoPersona, :nombre, :apellido, :telefono #, :arregloPersonasPermitidas
 	def initialize (dni, tipoPersona, nombre, apellido, telefono)
 		@dni = dni
 		@tipoPersona = tipoPersona
 		@nombre = nombre
-		@apellido = apeelido
+		@apellido = apellido
 		@telefono = telefono
-		@arregloPersonasPermitidas = []
+		#@arregloPersonasPermitidas = []
 	end
 
-	def registrarPersonasPermitidas
+	#def registrarPersonasPermitidas
 
-	end
+	#end
 
 end
 
@@ -54,16 +54,39 @@ class Visita
 end
 
 class Administrador
-	attr_accessor :arregloHabitacion
-	def initilize
-		@arregloHabitacion = []
+	attr_accessor :arregloPersonas
+	def initialize
+		@arregloPersonas = []
 	end
+
 
 	def registrarHabitacion
 	end
 
-	def registrarPropietario
+	def registrar(persona)
+			arregloPersonas.push(persona)
 	end
+
+	def obtenerPropietario(tipoPersona)
+		temporal = []
+		for p in arregloPersonas
+			if p.tipoPersona==tipoPersona
+				temporal.push(p)
+			end
+		end
+		return temporal
+
+	end
+
+
+
+
+
+
+
+
+
+
 
 	def registrarVisita 
 	end
@@ -89,3 +112,19 @@ class Administrador
 	def consultarDeudorServicio()
 	end
 end
+
+
+class TestCondominio < Test::Unit::TestCase
+	def testPersonasPorTipo
+		persona1 = Persona.new("123456789", "Propietario", "Carlos", "Rojas", "1234567")
+		persona2 = Persona.new("123456781", "Propietario", "Carla", "Roman", "1234561")
+		administrador = Administrador.new
+		administrador.registrar(persona1)
+		administrador.registrar(persona2)
+		propietario = administrador.obtenerPropietario("Propietario")
+		assert_equal 2, propietario.size
+	end
+end
+
+		
+
